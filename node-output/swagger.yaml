@@ -17,7 +17,7 @@
     "url" : "https://virtserver.swaggerhub.com/myhub151/Cybermity_Authentication/1.0.0"
   } ],
   "security" : [ {
-    "petstore_auth" : [ ]
+    "cybermity_auth" : [ ]
   } ],
   "tags" : [ {
     "name" : "Authentication",
@@ -69,7 +69,7 @@
       }
     },
     "securitySchemes" : {
-      "petstore_auth" : {
+      "cybermity_auth" : {
         "type" : "oauth2",
         "flows" : {
           "authorizationCode" : {
