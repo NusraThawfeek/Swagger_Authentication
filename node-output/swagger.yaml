@@ -1,8 +1,9 @@
 {
-  "openapi" : "3.0.0",
+  "swagger" : "2.0",
   "info" : {
+    "description" : "This is for Cybermity Application",
+    "version" : "1.0.0",
     "title" : "Authentication API",
-    "description" : "This is a simple API",
     "contact" : {
       "name" : "Kodez",
       "email" : "nusra0408@gmail.com"
@@ -10,36 +11,39 @@
     "license" : {
       "name" : "Apache 2.0",
       "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
-    },
-    "version" : "1.0.0-oas3"
+    }
   },
-  "servers" : [ {
-    "url" : "https://virtserver.swaggerhub.com/myhub151/Cybermity_Authentication/1.0.0"
-  } ],
-  "security" : [ {
-    "cybermity_auth" : [ ]
-  } ],
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/myhub151/Cybermity_Authentication/1.0.0",
   "tags" : [ {
     "name" : "Authentication",
     "description" : "Login With Username and password"
+  }, {
+    "name" : "Token generating",
+    "description" : "Retreive token from backend"
+  } ],
+  "schemes" : [ "https", "http" ],
+  "security" : [ {
+    "BasicAuth" : [ ]
   } ],
   "paths" : {
-    "/Sign-in" : {
+    "/sign-in" : {
       "post" : {
         "tags" : [ "Authentication" ],
         "summary" : "Login to the system",
         "description" : "Login with user email and password",
         "operationId" : "Login",
-        "requestBody" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/xml", "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Login details",
           "description" : "user email and password",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/UserData"
-              }
-            }
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/UserData"
           }
-        },
+        } ],
         "responses" : {
           "200" : {
             "description" : "Successfully loged-in"
@@ -52,31 +56,78 @@
           }
         }
       }
-    }
-  },
-  "components" : {
-    "schemas" : {
-      "UserData" : {
-        "type" : "object",
-        "properties" : {
-          "userEmail" : {
-            "type" : "string"
+    },
+    "/get-token/{userId}" : {
+      "get" : {
+        "tags" : [ "Token generating" ],
+        "summary" : "Generate token to the system",
+        "description" : "retreive token from the backend",
+        "operationId" : "getToken",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "the id of the user",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success"
           },
-          "password" : {
-            "type" : "string"
+          "404" : {
+            "description" : "Invalid Input"
+          },
+          "500" : {
+            "description" : "Internal server error"
           }
         }
       }
     },
-    "securitySchemes" : {
-      "cybermity_auth" : {
-        "type" : "oauth2",
-        "flows" : {
-          "authorizationCode" : {
-            "authorizationUrl" : "http://petstore.swagger.io/oauth/dialog",
-            "tokenUrl" : "http://petstore.swagger.io/oauth/dialog",
-            "scopes" : { }
+    "/get-jwt/{userId}" : {
+      "get" : {
+        "tags" : [ "Token generating" ],
+        "summary" : "Generate jwt token to the system",
+        "description" : "retreive jwt token from the backend",
+        "operationId" : "getjwtToken",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "the id of the user",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success"
+          },
+          "404" : {
+            "description" : "Invalid Input"
+          },
+          "500" : {
+            "description" : "Internal server error"
           }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "BasicAuth" : {
+      "type" : "basic"
+    }
+  },
+  "definitions" : {
+    "UserData" : {
+      "type" : "object",
+      "properties" : {
+        "userEmail" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
         }
       }
     }
